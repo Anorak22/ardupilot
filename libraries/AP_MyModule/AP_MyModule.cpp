@@ -4,7 +4,6 @@
 #include <AP_AHRS/AP_AHRS.h>
 #include <AP_Vehicle/AP_Vehicle.h>
 
-// uint8_t outputBuf [BUFSIZE];
 uint8_t sign;
 uint8_t textarray[] = {0xc0, 0xdf, 0xe0, 0xff, 0x20, 0x20, 0x41, 0x5A, 0x61, 0x7a};
 char testString[] = {"AZaz  АЯая"};
@@ -29,28 +28,10 @@ void MyModule::init()
     hal.console->printf("MyModule initialized\n");
 }
 
-void MyModule::test_text1()
-{
-  if (!(_enabled && _initialized)) {
-    return;
-  }
-  
-  AP_HAL::UARTDriver *uart = hal.serial(4);
-
-  textarray[0] += 1;
-  sendTextline(uart, textarray, 1);
-  hal.scheduler->delay_microseconds(100);
-
-  textarray[2] += 1;
-  sendTextline(uart, textarray, 2);
-}
-
 uint32_t del = AP_HAL::millis();
 
 void MyModule::update()
 {
-  // uint32_t start_time, end_time, elapsed_time;
-  //   start_time = AP_HAL::millis();
     if (!(_enabled && _initialized)) {
         return;
     }
@@ -58,16 +39,9 @@ void MyModule::update()
     AP_HAL::UARTDriver *uart = hal.serial(4);
     AP_AHRS &ahrs = AP::ahrs();
 
-    // if(AP_HAL::millis() - del > 5000) {
-    //     textarray[0] += 1;
-    //     sendTextline(uart, textarray, 1);
-    //     // hal.scheduler->delay_microseconds(6000);
+    sendTextline(uart, textarray, 1);
 
-    //     textarray[2] += 1;
-    //     sendTextline(uart, textarray, 2);
-    //     // hal.scheduler->delay_microseconds(6000);
-    //     del = AP_HAL::millis(); 
-    // }
+    sendTextline(uart, textarray, 2);
 
     //Питч и рол
     float pitch, roll;
@@ -87,11 +61,6 @@ void MyModule::update()
     float V = AP::battery().voltage(0); // 0 - первая батарея
 
     sendTelemetry(uart, pitch, roll, alt, 100, 100, flight_mode, 10, V, 25, 1500);
-
-    // hal.scheduler->delay_microseconds(100);
-    // end_time = AP_HAL::micros();
-    // elapsed_time = end_time - start_time;
-    // uart->printf("elapsed_time1 = %lu %lu %lu\n", elapsed_time, start_time, end_time);
 }
 
 void MyModule::setup_uart(AP_HAL::UARTDriver *uart, const char *name)
@@ -101,9 +70,6 @@ void MyModule::setup_uart(AP_HAL::UARTDriver *uart, const char *name)
     }
 
     uart->begin(100000);
-    // uart->flush();
-    //uart->set_options(2);
-    uart->set_stop_bits(2);
 }
 
 uint8_t checksum(uint8_t *buf, uint8_t bufsize )

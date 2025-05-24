@@ -131,13 +131,6 @@ void Copter::update_my_module()
     }
 }
 
-void Copter::test_text()
-{
-    if (mymodule != nullptr) {
-        mymodule->test_text1();
-    }
-}
-
 const AP_Scheduler::Task Copter::scheduler_tasks[] = {
     //FAST_TASK(init_my_module),
     // update INS immediately to get current gyro data populated
@@ -182,7 +175,7 @@ const AP_Scheduler::Task Copter::scheduler_tasks[] = {
 
 
     //SCHED_TASK_CLASS(MyModule, &copter.mymodule, update, 10, 100, 20),
-    SCHED_TASK(test_text, 0.2, 1000, 24),
+    // SCHED_TASK(test_text, 0.2, 1000, 24),
     // SCHED_TASK(test_telem, 10, 100, 20),
 
 

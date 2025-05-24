@@ -29,8 +29,6 @@ public:
     void init();
     void update();
 
-    void test_text1();
-
     // Функции тестирования UART
     static void setup_uart(AP_HAL::UARTDriver *uart, const char *name);
 
