@@ -1,0 +1,9 @@
+def build(bld):
+    bld.CXXTarget(
+        target='modules/AP_MyModule',
+        source=[
+            'AP_MyModule.cpp',
+        ],
+        includes='.',
+        uselib='AP_OSD AP_Param',
+    )

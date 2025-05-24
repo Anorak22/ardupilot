@@ -41,6 +41,7 @@ void Copter::init_ardupilot()
     osd.init();
 #endif
 
+
     // update motor interlock state
     update_using_interlock();
 

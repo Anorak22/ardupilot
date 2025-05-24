@@ -2558,6 +2558,8 @@ void AP_OSD_Screen::draw(void)
     if (!enabled || !backend) {
         return;
     }
+
+    backend->write(10, 10, false, "GG VP");
     //Note: draw order should be optimized.
     //Big and less important items should be drawn first,
     //so they will not overwrite more important ones.

@@ -89,6 +89,8 @@
 
 #include "RC_Channel_Copter.h"         // RC Channel Library
 
+#include "AP_MyModule/AP_MyModule.h"
+
 #include "GCS_MAVLink_Copter.h"
 #include "GCS_Copter.h"
 #include "AP_Rally.h"           // Rally point library
@@ -232,10 +234,14 @@ public:
 
     friend class PayloadPlace;
 
+    static MyModule *mymodule;
+
     Copter(void);
 
 private:
-
+    void init_my_module();
+    void update_my_module();
+    void test_text();
     // key aircraft parameters passed to multiple libraries
     AP_MultiCopter aparm;
 
@@ -261,6 +267,7 @@ private:
 
     // helper function to get inertially interpolated rangefinder height.
     bool get_rangefinder_height_interpolated_cm(int32_t& ret) const;
+    void startup_ground();
 
 #if AP_RANGEFINDER_ENABLED
     class SurfaceTracking {

@@ -233,6 +233,7 @@ public:
         k_param_fs_batt_curr_rtl,
         k_param_rtl_cone_slope, // 137
 
+        k_param_mymodule_enable = 138,
         //
         // 140: Sensor parameters
         //
@@ -383,6 +384,8 @@ public:
         k_param_throw_altitude_max,
         k_param__gcs,
 
+        // k_param_mymodule,
+
         // the k_param_* space is 9-bits in size
         // 511: reserved
     };
@@ -409,6 +412,8 @@ public:
     AP_Int8         super_simple;
 
     AP_Int8         wp_yaw_behavior;            // controls how the autopilot controls yaw during missions
+
+    AP_Int16        mymodule_enable;                  // my new parameter's description goes here
 
 #if MODE_POSHOLD_ENABLED
     AP_Int16        poshold_brake_rate;         // PosHold flight mode's rotation rate during braking in deg/sec

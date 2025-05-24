@@ -2,6 +2,7 @@
 
 #include <AP_Gripper/AP_Gripper.h>
 #include <AP_InertialSensor/AP_InertialSensor_rate_config.h>
+#include "AP_MyModule/AP_MyModule.h"
 
 /*
    This program is free software: you can redistribute it and/or modify
@@ -31,6 +32,15 @@
 #endif
 
 const AP_Param::Info Copter::var_info[] = {
+
+    
+    // @Param: MyModule_ENABLE
+    // @DisplayName: MyModule Enable
+    // @Description: Enable or disable MyModule OSD output
+    // @Values: 0:Disabled,1:Enabled
+    // @User: Standard
+    GSCALAR(mymodule_enable, "MyModule", 1),
+
     // @Param: FORMAT_VERSION
     // @DisplayName: Eeprom format version number
     // @Description: This value is incremented when changes are made to the eeprom format
@@ -1112,6 +1122,7 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
   extension to g2 parameters
  */
 const AP_Param::GroupInfo ParametersG2::var_info2[] = {
+
 
     // @Param: PLDP_THRESH
     // @DisplayName: Payload Place thrust ratio threshold

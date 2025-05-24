@@ -57,6 +57,8 @@ void loop(void)
     test_uart(hal.serial(3), "SERIAL3");
     test_uart(hal.serial(4), "SERIAL4");
 
+    printf("Hi GG\n");
+
     // also do a raw printf() on some platforms, which prints to the
     // debug console
     ::printf("Hello on debug console at %.3f seconds\n", (double)(AP_HAL::millis() * 0.001f));

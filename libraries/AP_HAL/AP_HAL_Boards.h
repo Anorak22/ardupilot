@@ -167,7 +167,7 @@
 #endif
 
 #ifndef HAL_OS_POSIX_IO
-#define HAL_OS_POSIX_IO 0
+#define HAL_OS_POSIX_IO 1
 #endif
 
 #ifndef HAL_PARAM_DEFAULTS_PATH

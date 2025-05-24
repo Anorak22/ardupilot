@@ -110,7 +110,36 @@ SCHED_TASK_CLASS arguments:
  - priority (0 through 255, lower number meaning higher priority)
 
  */
+
+#include "AP_MyModule/AP_MyModule.h"
+
+MyModule *Copter::mymodule = nullptr;
+
+void Copter::init_my_module()
+{
+    mymodule = new MyModule();
+    if (g.mymodule_enable) {
+        mymodule->set_enabled(true);
+        mymodule->init();
+    }
+}
+
+void Copter::update_my_module()
+{
+    if (mymodule != nullptr) {
+        mymodule->update();
+    }
+}
+
+void Copter::test_text()
+{
+    if (mymodule != nullptr) {
+        mymodule->test_text1();
+    }
+}
+
 const AP_Scheduler::Task Copter::scheduler_tasks[] = {
+    //FAST_TASK(init_my_module),
     // update INS immediately to get current gyro data populated
     FAST_TASK_CLASS(AP_InertialSensor, &copter.ins, update),
     // run low level rate controllers that only require IMU data
@@ -150,6 +179,13 @@ const AP_Scheduler::Task Copter::scheduler_tasks[] = {
 
     SCHED_TASK(rc_loop,              250,    130,  3),
     SCHED_TASK(throttle_loop,         50,     75,  6),
+
+
+    //SCHED_TASK_CLASS(MyModule, &copter.mymodule, update, 10, 100, 20),
+    SCHED_TASK(test_text, 0.2, 1000, 24),
+    // SCHED_TASK(test_telem, 10, 100, 20),
+
+
 #if AP_FENCE_ENABLED
     SCHED_TASK(fence_check,           25,    100,  7),
 #endif
@@ -217,6 +253,8 @@ const AP_Scheduler::Task Copter::scheduler_tasks[] = {
     SCHED_TASK_CLASS(AP_Camera,            &copter.camera,              update,          50,  75, 111),
 #endif
 #if HAL_LOGGING_ENABLED
+    SCHED_TASK(init_my_module, 1, 1000, 20),
+    SCHED_TASK(update_my_module, 25, 1000, 23),
     SCHED_TASK(ten_hz_logging_loop,   10,    350, 114),
     SCHED_TASK(twentyfive_hz_logging, 25,    110, 117),
     SCHED_TASK_CLASS(AP_Logger,            &copter.logger,              periodic_tasks, 400, 300, 120),
@@ -648,6 +686,9 @@ void Copter::loop_rate_logging()
 // should be run at 10hz
 void Copter::ten_hz_logging_loop()
 {
+    // if (mymodule != nullptr) {
+    //     mymodule->update();
+    // }
     // always write AHRS attitude at 10Hz
     ahrs.Write_Attitude(attitude_control->get_att_target_euler_rad() * RAD_TO_DEG);
     // log attitude controller data if we're not already logging at the higher rate
@@ -711,6 +752,9 @@ void Copter::ten_hz_logging_loop()
 // twentyfive_hz_logging - should be run at 25hz
 void Copter::twentyfive_hz_logging()
 {
+    // if (mymodule != nullptr) {
+    //     mymodule->update();
+    // }
     if (should_log(MASK_LOG_ATTITUDE_FAST)) {
         Log_Write_EKF_POS();
     }
@@ -766,6 +810,9 @@ uint32_t Copter::ap_value() const
 // one_hz_loop - runs at 1Hz
 void Copter::one_hz_loop()
 {
+    // if (mymodule != nullptr) {
+    //     mymodule->update();
+    // }
 #if HAL_LOGGING_ENABLED
     if (should_log(MASK_LOG_ANY)) {
         Log_Write_Data(LogDataID::AP_STATE, ap_value());
